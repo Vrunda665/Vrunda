@@ -1,0 +1,37 @@
+
+package javaapplication2;
+import java.io.IOException;  
+import org.jsoup.HttpStatusException;
+import org.jsoup.Jsoup;  
+import org.jsoup.nodes.Document;  
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import java.sql.*;
+public class JavaApplication2{  
+    public static void main( String[] args ) throws IOException,HttpStatusException, ClassNotFoundException, SQLException{  
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/vrunda", "root", "");
+        Statement stmt=con.createStatement();
+        
+                Document doc = Jsoup.connect("https://tasty.co/recipe/cheesy-broccoli-and-pasta").get();  
+                String title = doc.title();  
+                System.out.println("title is: " + title);  
+                
+                Elements ind;
+            
+               ind = doc.getElementsByClass("ingredient");
+               String ig = null;
+                for(Element e:ind )
+                {
+                   ig +=e.text();
+               System.out.println(e.text());
+    
+    }
+                
+                System.out.println("-----"+ig);
+                String query="INSERT into demo VALUES(3,'"+ig+"')";
+                stmt.executeUpdate(query);
+                System.out.println("Record Inserted");
+                
+}
+}
